@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" />
+<title>Explore Drinks</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+html,body{
+background:#000;
+color:white;
+overflow-x:hidden;
+background: radial-gradient(circle at 20% 20%, #111 0%, #000 70%);
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+@keyframes floatBottle{
+0%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(0);}
+}
+
+img{
+max-width:100%;
+height:auto;
+object-fit:contain;
+}
+
+.bottle.active{
+animation:floatBottle 6s ease-in-out infinite;
+}
+/* HEADER */
+
+header{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+background:black;
+z-index:1000;
+}
+
+header h2{
+font-size:22px;
+}
+
+nav a{
+margin:0 20px;
+text-decoration:none;
+color:white;
+font-size:16px;
+}
+
+nav a:hover{
+color:#ffb347;
+}
+
+/* HERO */
+
+.hero{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:120px 8% 60px;
+gap:40px;
+transition:1s;
+position:relative;
+flex-wrap:wrap;
+}
+
+/* TEXT */
+
+.hero-text{
+max-width:500px;
+}
+
+.hero-text h1{
+font-size:55px;
+margin-bottom:20px;
+}
+
+.hero-text p{
+font-size:18px;
+opacity:0.8;
+line-height:1.6;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+width:500px;
+height:500px;
+background:radial-gradient(circle,rgba(255,255,255,0.15),transparent);
+top:40%;
+left:70%;
+transform:translate(-50%,-50%);
+filter:blur(120px);
+pointer-events:none;
+}
+
+/* BOTTLE */
+
+.bottle-container{
+position:relative;
+width:50vw;
+max-width:700px;
+height:500px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.bottle{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) rotate(-15deg) scale(1);
+width: 500px;
+opacity:0;
+transition:1s ease;
+object-fit:contain;
+}
+
+.bottle.active{
+opacity:1;
+transform:translate(-50%,-50%) rotate(0deg) scale(1);
+}
+
+/* SELECTOR */
+
+.selector{
+position:absolute;
+bottom:60px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:30px;
+z-index:10;
+}
+
+.selector img{
+width:60px;
+cursor:pointer;
+opacity:0.6;
+transition:0.3s;
+}
+
+.selector img:hover{
+opacity:1;
+transform:scale(1.2);
+}
+
+.selector img.active{
+opacity:1;
+transform:scale(1.3);
+}
+
+/* FAQ */
+
+.faq{
+padding:120px 8%;
+background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
+text-align:center;
+}
+
+.faq h2{
+font-size:42px;
+margin-bottom:60px;
+}
+
+.faq-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:30px;
+}
+
+/* GLASS CARD */
+
+.faq-card{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+-webkit-backdrop-filter:blur(15px);
+
+border:1px solid rgba(255,255,255,0.1);
+border-radius:18px;
+
+padding:30px;
+
+transition:0.4s;
+position:relative;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+.faq-card:hover{
+
+transform:translateY(-12px) scale(1.02);
+
+box-shadow:0 20px 60px rgba(0,0,0,0.7);
+
+border:1px solid rgba(255,255,255,0.25);
+
+}
+
+.faq-card h3{
+margin-bottom:15px;
+font-size:20px;
+color:#fff;
+}
+
+.faq-card p{
+font-size:15px;
+opacity:0.85;
+line-height:1.6;
+}
+
+/* LIGHT GLOW EFFECT */
+
+.faq-card::before{
+
+content:"";
+
+position:absolute;
+
+width:150px;
+height:150px;
+
+background:radial-gradient(circle,rgba(255,255,255,0.2),transparent);
+
+top:-40px;
+right:-40px;
+
+opacity:0;
+transition:0.4s;
+
+}
+
+.faq-card:hover::before{
+
+opacity:1;
+
+}
+/* STATUS */
+
+.status{
+padding:100px 8%;
+background:#000;
+}
+
+.status h2{
+font-size:40px;
+margin-bottom:30px;
+}
+
+.status-cards{
+display:flex;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.card{
+background:#111;
+padding:30px;
+border-radius:10px;
+flex:1;
+min-width:200px;
+text-align:center;
+}
+
+.card h3{
+font-size:30px;
+color:#ffb347;
+margin-bottom:10px;
+}
+
+section{
+width:100%;
+max-width:100%;
+}
+/* MOBILE RESPONSIVE */
+
+@media (max-width:768px){
+
+header{
+padding:15px 5%;
+}
+
+nav a{
+margin:0 10px;
+font-size:14px;
+}
+
+/* HERO */
+
+.hero{
+flex-direction:column;
+text-align:center;
+padding:120px 20px 80px;
+}
+
+/* TEXT */
+
+.hero-text{
+max-width:100%;
+}
+
+.hero-text h1{
+font-size:34px;
+}
+
+.hero-text p{
+font-size:16px;
+}
+
+/* BOTTLE */
+
+/* MOBILE BOTTLE FIX */
+
+.bottle-container{
+width:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+margin-top:40px;
+text-align:center;
+}
+
+.bottle {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  transform: none !important;
+  width: clamp(250px, 75vw, 350px); /* min 250px, max 350px, scales with viewport */
+  margin: auto;
+  display: none;
+}
+
+.bottle.active{
+display:block;
+opacity:1;
+}
+/* SELECTOR */
+
+.selector{
+position:relative;
+bottom:auto;
+left:auto;
+transform:none;
+
+margin-top:25px;
+
+display:flex;
+justify-content:center;
+gap:15px;
+}
+
+.selector img{
+width:50px;
+}
+
+/* FAQ */
+
+.faq{
+padding:80px 6%;
+}
+
+.faq-container{
+grid-template-columns:1fr;
+}
+
+/* STATUS */
+
+.status{
+padding:80px 6%;
+}
+
+.status-cards{
+flex-direction:column;
+}
+
+.card{
+width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h2>🍷Elixir Insight</h2>
+
+<nav>
+<a href="#">Home</a>
+<a href="#faq">FAQ</a>
+<a href="#status">Status</a>
+</nav>
+
+</header>
+
+
+<section class="hero" id="hero">
+
+<div class="hero-text">
+<h1 id="drinkTitle">Red Wine</h1>
+<p id="drinkDesc">
+Red wine contains antioxidants that may support heart health when consumed responsibly.
+</p>
+<p id="drinkBenefits">
+"Benefits: Contains antioxidants like resveratrol that may support heart health when consumed in moderation."
+</p>
+</div>
+
+<div class="bottle-container">
+
+<img src="redwine.png" class="bottle active" id="wine">
+<img src="lightbeer.png" class="bottle" id="beer">
+<img src="vodka.png" class="bottle" id="vodka">
+<img src="tequila.png" class="bottle" id="tequila">
+
+</div>
+
+<div class="selector">
+
+<img src="redwine.png" onclick="showDrink('wine',this)" class="active">
+<img src="lightbeer.png" onclick="showDrink('beer',this)">
+<img src="vodka.png" onclick="showDrink('vodka',this)">
+<img src="tequila.png" onclick="showDrink('tequila',this)">
+
+</div>
+
+</section>
+
+
+<section class="faq" id="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<div class="faq-container">
+
+<div class="faq-card">
+<h3>Is moderate alcohol consumption safe?</h3>
+<p>Moderate drinking may provide certain health benefits, but excessive consumption can be harmful.</p>
+</div>
+
+<div class="faq-card">
+<h3>Which drink has antioxidants?</h3>
+<p>Red wine contains antioxidants like resveratrol which may support heart health.</p>
+</div>
+
+<div class="faq-card">
+<h3>What is considered moderate drinking?</h3>
+<p>Generally one drink per day for women and two drinks per day for men.</p>
+</div>
+
+<div class="faq-card">
+<h3>Is alcohol good for stress relief?</h3>
+<p>Alcohol may temporarily relax the body but should not be used as a regular stress management method.</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section class="status" id="status">
+
+<h2>Alcohol Insights</h2>
+
+<div class="status-cards">
+
+<div class="card">
+<h3>4</h3>
+<p>Drinks Explained</p>
+</div>
+
+<div class="card">
+<h3>100%</h3>
+<p>Educational Purpose</p>
+</div>
+
+<div class="card">
+<h3>2026</h3>
+<p>Updated Research</p>
+</div>
+
+</div>
+
+</section>
+
+
+<script>
+
+const hero=document.getElementById("hero");
+const title=document.getElementById("drinkTitle");
+const desc=document.getElementById("drinkDesc");
+const benefits=document.getElementById("drinkBenefits");
+
+const bottles=document.querySelectorAll(".bottle");
+const icons=document.querySelectorAll(".selector img");
+
+const drinkData={
+
+wine:{
+color:"linear-gradient(120deg, #5a002b, #a0004f)",
+title:"Red Wine",
+desc:"Red wine contains antioxidants that may support heart health when consumed responsibly.",
+benefits:"Benefits: Contains antioxidants like resveratrol that may support heart health when consumed in moderation."
+},
+
+beer:{
+color:"linear-gradient(120deg,#8a6a00,#000)",
+title:"Light Beer",
+desc:"Light beer has lower alcohol and calories compared to regular beer.",
+benefits:"Benefits: Contains small amounts of B vitamins and minerals and usually has lower alcohol content."
+},
+
+vodka:{
+color:"linear-gradient(120deg,#004e92,#000)",
+title:"Vodka Soda",
+desc:"Vodka soda is a simple drink with fewer calories compared to sugary cocktails.",
+benefits:"Benefits: Compared to sugary cocktails, vodka soda has fewer calories and a cleaner taste."
+},
+
+tequila:{
+color:"linear-gradient(120deg,#b36b00,#000)",
+title:"Tequila",
+desc:"Tequila made from agave contains natural sugars and unique flavor compounds.",
+benefits:"Benefits: Pure tequila contains natural agave sugars and is often enjoyed in small quantities."
+}
+
+};
+
+
+function showDrink(id,element){
+
+bottles.forEach(b=>b.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+
+icons.forEach(i=>i.classList.remove("active"));
+element.classList.add("active");
+
+hero.style.background=drinkData[id].color;
+title.innerText=drinkData[id].title;
+desc.innerText=drinkData[id].desc;
+benefits.innerText = drinkData[id].benefits;
+
+}
+
+</script>
+
+</body>
+</html>
