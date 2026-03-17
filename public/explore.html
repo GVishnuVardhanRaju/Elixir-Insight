@@ -1,10 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="/favicon-32x32.png" />
-<title>Explore Drinks</title>
+<title>Elixir Insight</title>
 
 <style>
 
@@ -12,35 +13,44 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial;
+font-family: Arial, Helvetica, sans-serif;
 }
 
-html,body{
-background:#000;
+html, body{
+overflow-x:hidden;
+width:100%;
+}
+
+body{
+background: linear-gradient(-45deg,
+rgba(255,80,120,0.35),
+rgba(80,120,255,0.35),
+rgba(255,180,80,0.35),
+rgba(0,0,0,1)
+);
+background-size:400% 400%;
+animation:gradientMove 12s ease infinite;
 color:white;
 overflow-x:hidden;
-background: radial-gradient(circle at 20% 20%, #111 0%, #000 70%);
 }
 
-html{
-scroll-behavior:smooth;
+@keyframes gradientMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
-@keyframes floatBottle{
-0%{transform:translateY(0);}
-50%{transform:translateY(-20px);}
-100%{transform:translateY(0);}
+.reveal{
+opacity:0;
+transform:translateY(40px);
+transition:all 0.8s ease;
 }
 
-img{
-max-width:100%;
-height:auto;
-object-fit:contain;
+.reveal.active{
+opacity:1;
+transform:translateY(0);
 }
 
-.bottle.active{
-animation:floatBottle 6s ease-in-out infinite;
-}
 /* HEADER */
 
 header{
@@ -51,7 +61,12 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:20px 8%;
-background:black;
+
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+
+border-bottom:1px solid rgba(255,255,255,0.1);
 z-index:1000;
 }
 
@@ -70,105 +85,127 @@ nav a:hover{
 color:#ffb347;
 }
 
-/* HERO */
+/* HERO SECTION */
 
 .hero{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:120px 8% 60px;
-gap:40px;
-transition:1s;
+padding:160px 8% 120px;
+text-align:center;
 position:relative;
-flex-wrap:wrap;
+background:#000;
+overflow:hidden;
 }
 
-/* TEXT */
-
-.hero-text{
-max-width:500px;
-}
-
-.hero-text h1{
-font-size:55px;
-margin-bottom:20px;
-}
-
-.hero-text p{
-font-size:18px;
-opacity:0.8;
-line-height:1.6;
-}
+/* Glow background */
 
 .hero::before{
 content:"";
 position:absolute;
-width:500px;
-height:500px;
-background:radial-gradient(circle,rgba(255,255,255,0.15),transparent);
-top:40%;
-left:70%;
-transform:translate(-50%,-50%);
+width:600px;
+height:600px;
+background:radial-gradient(circle,#ff4d6d33,transparent);
+top:20%;
+left:25%;
 filter:blur(120px);
-pointer-events:none;
 }
 
-/* BOTTLE */
+.hero::after{
+content:"";
+position:absolute;
+width:600px;
+height:600px;
+background:radial-gradient(circle,#4da6ff33,transparent);
+bottom:10%;
+right:20%;
+filter:blur(120px);
+}
 
-.bottle-container{
+.hero-title{
+font-size:55px;
+margin-bottom:10px;
+}
+
+.hero-sub{
+opacity:0.8;
+max-width:600px;
+margin:auto;
+margin-bottom:70px;
+font-size:18px;
+}
+
+/* GRID */
+
+.drink-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:40px;
 position:relative;
-width:50vw;
-max-width:700px;
-height:500px;
-display:flex;
-align-items:center;
-justify-content:center;
+z-index:2;
 }
 
-.bottle{
+/* CARD */
+
+.drink-card{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+border-radius:20px;
+padding:35px;
+backdrop-filter:blur(20px);
+transition:0.4s;
+position:relative;
+overflow:hidden;
+}
+
+/* Hover glow */
+
+.drink-card::before{
+content:"";
 position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%) rotate(-15deg) scale(1);
-width: 500px;
+width:200px;
+height:200px;
+background:radial-gradient(circle,rgba(255,255,255,0.25),transparent);
+top:-50px;
+right:-50px;
 opacity:0;
-transition:1s ease;
-object-fit:contain;
+transition:0.4s;
 }
 
-.bottle.active{
+.drink-card:hover::before{
 opacity:1;
-transform:translate(-50%,-50%) rotate(0deg) scale(1);
 }
 
-/* SELECTOR */
-
-.selector{
-position:absolute;
-bottom:60px;
-left:50%;
-transform:translateX(-50%);
-display:flex;
-gap:30px;
-z-index:10;
+.drink-card:hover{
+transform:translateY(-12px) scale(1.03);
+box-shadow:0 25px 60px rgba(0,0,0,0.7);
 }
 
-.selector img{
-width:60px;
-cursor:pointer;
-opacity:0.6;
-transition:0.3s;
+/* Bottle animation */
+
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-10px)}
+100%{transform:translateY(0)}
 }
 
-.selector img:hover{
-opacity:1;
-transform:scale(1.2);
+.drink-card img{
+width:140px;
+margin-bottom:20px;
+animation:float 6s ease-in-out infinite;
+transition:0.4s;
 }
 
-.selector img.active{
-opacity:1;
-transform:scale(1.3);
+.drink-card:hover img{
+transform:scale(1.1) rotate(-5deg);
+}
+
+.drink-card h3{
+margin-bottom:10px;
+font-size:22px;
+}
+
+.drink-card p{
+font-size:15px;
+opacity:0.85;
+line-height:1.6;
 }
 
 /* FAQ */
@@ -190,97 +227,55 @@ grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 gap:30px;
 }
 
-/* GLASS CARD */
-
 .faq-card{
 background:rgba(255,255,255,0.05);
 backdrop-filter:blur(15px);
--webkit-backdrop-filter:blur(15px);
-
 border:1px solid rgba(255,255,255,0.1);
 border-radius:18px;
-
 padding:30px;
-
 transition:0.4s;
-position:relative;
-
-box-shadow:0 10px 30px rgba(0,0,0,0.5);
 }
 
 .faq-card:hover{
-
-transform:translateY(-12px) scale(1.02);
-
+transform:translateY(-10px);
 box-shadow:0 20px 60px rgba(0,0,0,0.7);
-
-border:1px solid rgba(255,255,255,0.25);
-
 }
 
 .faq-card h3{
 margin-bottom:15px;
-font-size:20px;
-color:#fff;
 }
 
 .faq-card p{
-font-size:15px;
-opacity:0.85;
+opacity:0.8;
 line-height:1.6;
 }
 
-/* LIGHT GLOW EFFECT */
-
-.faq-card::before{
-
-content:"";
-
-position:absolute;
-
-width:150px;
-height:150px;
-
-background:radial-gradient(circle,rgba(255,255,255,0.2),transparent);
-
-top:-40px;
-right:-40px;
-
-opacity:0;
-transition:0.4s;
-
-}
-
-.faq-card:hover::before{
-
-opacity:1;
-
-}
 /* STATUS */
 
 .status{
 padding:100px 8%;
 background:#000;
+text-align:center;
 }
 
 .status h2{
 font-size:40px;
-margin-bottom:30px;
+margin-bottom:40px;
 }
 
 .status-cards{
 display:flex;
 gap:30px;
 flex-wrap:wrap;
+justify-content:center;
 }
 
 .card{
 background:#111;
 padding:30px;
-border-radius:10px;
+border-radius:12px;
 flex:1;
 min-width:200px;
-text-align:center;
 }
 
 .card h3{
@@ -289,114 +284,96 @@ color:#ffb347;
 margin-bottom:10px;
 }
 
-section{
-width:100%;
-max-width:100%;
-}
-/* MOBILE RESPONSIVE */
+/* HAMBURGER */
 
-@media (max-width:768px){
+.hamburger{
+display:none;
+flex-direction:column;
+cursor:pointer;
+gap:5px;
+}
+
+.hamburger span{
+width:28px;
+height:3px;
+background:white;
+display:block;
+border-radius:2px;
+transition:0.3s;
+}
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hero{
+padding:140px 20px 80px;
+}
+
+.hero-title{
+font-size:34px;
+}
+
+.hero-sub{
+font-size:16px;
+}
 
 header{
 padding:15px 5%;
 }
 
-nav a{
-margin:0 10px;
-font-size:14px;
-}
-
-/* HERO */
-
-.hero{
-flex-direction:column;
-text-align:center;
-padding:120px 20px 80px;
-}
-
-/* TEXT */
-
-.hero-text{
-max-width:100%;
-}
-
-.hero-text h1{
-font-size:34px;
-}
-
-.hero-text p{
-font-size:16px;
-}
-
-/* BOTTLE */
-
-/* MOBILE BOTTLE FIX */
-
-.bottle-container{
-width:100%;
-display:flex;
-justify-content:center;
-align-items:center;
-margin-top:40px;
-text-align:center;
-}
-
-.bottle {
-  position: relative !important;
-  left: auto !important;
-  right: auto !important;
-  top: auto !important;
-  transform: none !important;
-  width: clamp(250px, 75vw, 350px); /* min 250px, max 350px, scales with viewport */
-  margin: auto;
-  display: none;
-}
-
-.bottle.active{
+.drink-card img{
 display:block;
-opacity:1;
+margin:auto;
+width:90px;
 }
-/* SELECTOR */
 
-.selector{
-position:relative;
-bottom:auto;
-left:auto;
-transform:none;
+.drink-card{
+width:100%;
+max-width:100%;
+overflow:hidden;
+}
 
-margin-top:25px;
+.drink-card::before{
+width:120px;
+height:120px;
+}
+
+.drink-grid{
+grid-template-columns:1fr;
+gap:30px;
+}
+
+nav{
+position:absolute;
+top:70px;
+left:0;              /* FIXED */
+width:100%;          /* FULL WIDTH */
+background:#000;
 
 display:flex;
-justify-content:center;
-gap:15px;
-}
-
-.selector img{
-width:50px;
-}
-
-/* FAQ */
-
-.faq{
-padding:80px 6%;
-}
-
-.faq-container{
-grid-template-columns:1fr;
-}
-
-/* STATUS */
-
-.status{
-padding:80px 6%;
-}
-
-.status-cards{
 flex-direction:column;
+align-items:center;
+
+max-height:0;        /* HIDDEN */
+overflow:hidden;
+transition:max-height 0.4s;
 }
 
-.card{
+/* links */
+nav a{
+padding:15px;
 width:100%;
+border-bottom:1px solid rgba(255,255,255,0.1);
+text-align:center;
+}
+
+/* open menu */
+nav.active{
+max-height:300px;
+}
+
+.hamburger{
+display:flex;
 }
 
 }
@@ -407,50 +384,57 @@ width:100%;
 <body>
 
 <header>
+<h2>🍷 Elixir Insight</h2>
 
-<h2>🍷Elixir Insight</h2>
-
-<nav>
-<a href="#">Home</a>
-<a href="#faq">FAQ</a>
-<a href="#status">Status</a>
+<nav id="navMenu">
+<a href="#" onclick="toggleMenu()">Home</a>
+<a href="#faq" onclick="toggleMenu()">FAQ</a>
+<a href="#status" onclick="toggleMenu()">Status</a>
 </nav>
+
+<div class="hamburger" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</div>
 
 </header>
 
+<section class="hero">
 
-<section class="hero" id="hero">
-
-<div class="hero-text">
-<h1 id="drinkTitle">Red Wine</h1>
-<p id="drinkDesc">
-Red wine contains antioxidants that may support heart health when consumed responsibly.
+<h1 class="hero-title">Premium Drink Insights</h1>
+<p class="hero-sub">
+Explore selected alcoholic drinks and their interesting properties when enjoyed responsibly.
 </p>
-<p id="drinkBenefits">
-"Benefits: Contains antioxidants like resveratrol that may support heart health when consumed in moderation."
-</p>
+
+<div class="drink-grid">
+
+<div class="drink-card">
+<img src="redwine.jpg">
+<h3>Red Wine</h3>
+<p>Contains antioxidants like resveratrol that may support heart health.</p>
 </div>
 
-<div class="bottle-container">
-
-<img src="redwine.png" class="bottle active" id="wine">
-<img src="lightbeer.png" class="bottle" id="beer">
-<img src="vodka.png" class="bottle" id="vodka">
-<img src="tequila.png" class="bottle" id="tequila">
-
+<div class="drink-card">
+<img src="lightbeer.jpg">
+<h3>Light Beer</h3>
+<p>Lower alcohol and fewer calories compared to regular beer.</p>
 </div>
 
-<div class="selector">
-
-<img src="redwine.png" onclick="showDrink('wine',this)" class="active">
-<img src="lightbeer.png" onclick="showDrink('beer',this)">
-<img src="vodka.png" onclick="showDrink('vodka',this)">
-<img src="tequila.png" onclick="showDrink('tequila',this)">
-
+<div class="drink-card">
+<img src="vodka.jpg">
+<h3>Vodka Soda</h3>
+<p>One of the lowest calorie alcoholic drink combinations.</p>
 </div>
 
+<div class="drink-card">
+<img src="tequila.jpg">
+<h3>Tequila</h3>
+<p>Made from agave and known for its clean flavor profile.</p>
+</div>
+
+</div>
 </section>
-
 
 <section class="faq" id="faq">
 
@@ -460,7 +444,7 @@ Red wine contains antioxidants that may support heart health when consumed respo
 
 <div class="faq-card">
 <h3>Is moderate alcohol consumption safe?</h3>
-<p>Moderate drinking may provide certain health benefits, but excessive consumption can be harmful.</p>
+<p>Moderate drinking may provide certain benefits, but excessive consumption can be harmful.</p>
 </div>
 
 <div class="faq-card">
@@ -481,7 +465,6 @@ Red wine contains antioxidants that may support heart health when consumed respo
 </div>
 
 </section>
-
 
 <section class="status" id="status">
 
@@ -508,66 +491,28 @@ Red wine contains antioxidants that may support heart health when consumed respo
 
 </section>
 
-
 <script>
+function reveal(){
+let reveals=document.querySelectorAll(".reveal");
 
-const hero=document.getElementById("hero");
-const title=document.getElementById("drinkTitle");
-const desc=document.getElementById("drinkDesc");
-const benefits=document.getElementById("drinkBenefits");
+reveals.forEach(el=>{
+let windowHeight=window.innerHeight;
+let elementTop=el.getBoundingClientRect().top;
+let revealPoint=120;
 
-const bottles=document.querySelectorAll(".bottle");
-const icons=document.querySelectorAll(".selector img");
-
-const drinkData={
-
-wine:{
-color:"linear-gradient(120deg, #5a002b, #a0004f)",
-title:"Red Wine",
-desc:"Red wine contains antioxidants that may support heart health when consumed responsibly.",
-benefits:"Benefits: Contains antioxidants like resveratrol that may support heart health when consumed in moderation."
-},
-
-beer:{
-color:"linear-gradient(120deg,#8a6a00,#000)",
-title:"Light Beer",
-desc:"Light beer has lower alcohol and calories compared to regular beer.",
-benefits:"Benefits: Contains small amounts of B vitamins and minerals and usually has lower alcohol content."
-},
-
-vodka:{
-color:"linear-gradient(120deg,#004e92,#000)",
-title:"Vodka Soda",
-desc:"Vodka soda is a simple drink with fewer calories compared to sugary cocktails.",
-benefits:"Benefits: Compared to sugary cocktails, vodka soda has fewer calories and a cleaner taste."
-},
-
-tequila:{
-color:"linear-gradient(120deg,#b36b00,#000)",
-title:"Tequila",
-desc:"Tequila made from agave contains natural sugars and unique flavor compounds.",
-benefits:"Benefits: Pure tequila contains natural agave sugars and is often enjoyed in small quantities."
+if(elementTop < windowHeight - revealPoint){
+el.classList.add("active");
+}
+});
 }
 
-};
+window.addEventListener("scroll",reveal);
 
-
-function showDrink(id,element){
-
-bottles.forEach(b=>b.classList.remove("active"));
-document.getElementById(id).classList.add("active");
-
-icons.forEach(i=>i.classList.remove("active"));
-element.classList.add("active");
-
-hero.style.background=drinkData[id].color;
-title.innerText=drinkData[id].title;
-desc.innerText=drinkData[id].desc;
-benefits.innerText = drinkData[id].benefits;
-
+function toggleMenu(){
+const nav=document.getElementById("navMenu");
+nav.classList.toggle("active");
 }
-
 </script>
-
 </body>
 </html>
+```
